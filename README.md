@@ -38,14 +38,20 @@ pip install numpy scipy matplotlib
 
 ### Passo a Passo da Execução
 1. Clone este repositório para a sua máquina local:
+´´´
    git clone [link_repositorio]
+´´´
 
 2. Navegue até a pasta do projeto e, em seguida, entre na pasta dos códigos:
+´´´
    cd [pasta_repositorio]
    cd src
+´´´
 
 3. Execute o script principal:
+´´´
    python main.py
+´´´
 
 4. Uma interface gráfica será aberta. Selecione os arquivos solicitados na seguinte ordem:
    * O arquivo de áudio: audio_corrompido.wav
