@@ -1,7 +1,7 @@
 """
-# Data de última modificação: 29/04/2026
+# Data de última modificação: 30/04/2026
 #? Objetivo: Filtrar ruído de um arquivo de som .wav
-#todo: arrumar amplitude errada, 1.6
+#todo: revisar
 """
 
 import os # Sistema operacional
@@ -266,4 +266,34 @@ def plotar_resposta_frequencia(num, den, frequencia_amostragem):
 #! 1.6 Gráfico h[n] por 1000 amostras
 #! ==================================
 
-#todo
+def plotar_resposta_impulso(num, den, n_amostras=1000):
+    # Para obter h[n], aplicamos um impulso unitário na entrada do filtro.
+    # A saída do filtro para essa entrada é, por definição, a resposta ao impulso.
+
+    # Cria o vetor de amostras n = 0, 1, 2, ..., n_amostras-1
+    n = np.arange(n_amostras)
+
+    # Cria o impulso unitário
+    # impulso[0] = 1 e todas as outras amostras são zero
+    impulso = np.zeros(n_amostras)
+    impulso[0] = 1
+
+    # Filtra o impulso usando o filtro definido por num e den.
+    # A saída é a resposta ao impulso h[n].
+    h = signal.lfilter(num, den, impulso)
+
+    #* Configura e exibe o gráfico
+    plt.figure(num="Resposta ao impulso", figsize=(10, 4))
+    plt.plot(n, h, color='#1f77b4', linewidth=0.8)
+
+    plt.title("Resposta ao impulso do filtro digital")
+    plt.xlabel("n")
+    plt.ylabel("h[n]")
+    plt.grid(True, linestyle='--', alpha=0.6)
+
+    plt.xlim(0, n_amostras - 1)
+    plt.xticks(np.arange(0, n_amostras + 1, 100))
+    plt.tight_layout()
+    plt.show()
+
+    return h

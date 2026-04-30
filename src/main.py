@@ -27,7 +27,8 @@ numerador, denominador = carregamento_dados_1.carrega_mat()
 # Passa os parâmetros e gera o gráfico de H(e^jw)
 carregamento_dados_1.plotar_resposta_frequencia(numerador, denominador, fs)
 
-#todo terminar
+# Gera a resposta ao impulso h[n] com 1000 amostras
+h = carregamento_dados_1.plotar_resposta_impulso(numerador, denominador, n_amostras=1000)
 
 #* Execução da segunda parte
 
