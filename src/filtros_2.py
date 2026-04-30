@@ -1,7 +1,7 @@
 import numpy as np
 
 #! ========================================
-#! 2.1 Filtragem pela equação de diferenças
+#! 2.1a Filtragem pela equação de diferenças
 #! ========================================
 class FiltroEqDif:
     """
@@ -62,6 +62,9 @@ class FiltroEqDif:
 
         return y_n
 
+#! ================================================
+#! 2.2a e 2.2b - Truncagem da resposta ao impulso
+#! ================================================
 
 def truncar_resposta_impulso(h, percentual=0.01):
     """
@@ -97,9 +100,9 @@ def truncar_resposta_impulso(h, percentual=0.01):
 
     return h_trunc, Nh
 
-#! =====================================
-#! 2.2 Filtragem por convolução circular
-#! =====================================
+#! ========================================
+#! 2.2c Filtragem por convolução circular
+#! ========================================
 
 def filtragemPorConv(x, h_trunc):
     """
@@ -144,9 +147,9 @@ def filtragemPorConv(x, h_trunc):
 
     return y
 
-#! =====================
-#! 2.3 Filtragem por FFT
-#! =====================
+#! ================================================================
+#! 2.3a e 2.3b Filtragem pela propriedade de multiplicação da FFT
+#! ================================================================
 
 def filtragemPorFFT(x, h_trunc):
     """
