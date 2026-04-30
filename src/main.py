@@ -204,6 +204,41 @@ plt.show()
 
 #* Execução da terceira parte
 
+# ============================================================
+# 3. Filtragem do sinal
+# ============================================================
+
+resultados_3 = filtragem_3.filtrar_sinal_tres_formas(
+    dados=dados,
+    numerador=numerador,
+    denominador=denominador,
+    h_trunc=h_trunc,
+    usar_convolucao_implementada_no_audio_completo=False,
+    n_validacao_conv=3000
+)
+
+# 3.2 - Sinais no domínio do tempo
+filtragem_3.plotar_sinais_filtrados_tempo(
+    fs=fs,
+    sinal_original=dados,
+    resultados=resultados_3
+)
+
+# Zoom na região mais afetada pelo ruído
+filtragem_3.plotar_sinais_filtrados_tempo(
+    fs=fs,
+    sinal_original=dados,
+    resultados=resultados_3,
+    t_inicio=16,
+    t_fim=26
+)
+
+# 3.2 - Sinais no domínio da frequência
+filtragem_3.plotar_espectros_filtrados(
+    fs=fs,
+    resultados=resultados_3
+)
+
 #todo
 
 #* Execução da quarta parte
