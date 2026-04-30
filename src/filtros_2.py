@@ -1,6 +1,8 @@
 import numpy as np
 
-
+# ============================================================
+# 2.1 Filtragem pela equação de diferenças
+# ============================================================
 class FiltroEqDif:
     """
     Filtro IIR implementado pela equação de diferenças:
@@ -60,6 +62,9 @@ class FiltroEqDif:
 
         return y_n
 
+# ============================================================
+# 2.2 Cálculo e truncamento da resposta ao impulso
+# ============================================================
 
 def truncar_resposta_impulso(h, percentual=0.01):
     """
@@ -95,6 +100,9 @@ def truncar_resposta_impulso(h, percentual=0.01):
 
     return h_trunc, Nh
 
+# ============================================================
+# 2.3 Filtragem por convolução circular
+# ============================================================
 
 def filtragemPorConv(x, h_trunc):
     """
@@ -139,6 +147,9 @@ def filtragemPorConv(x, h_trunc):
 
     return y
 
+# ============================================================
+# 2.4 Filtragem por FFT
+# ============================================================
 
 def filtragemPorFFT(x, h_trunc):
     """
