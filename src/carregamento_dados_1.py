@@ -1,8 +1,7 @@
 """
-# Autores: Oliver Haas, Gabriel Paiva
 # Data de última modificação: 29/04/2026
 #? Objetivo: Filtrar ruído de um arquivo de som .wav
-#todo: alterar divisórias com nomes certos, arrumar ampltidue errada, 1.5, 1.6, 2 inteiro, 3 inteiro, 4 bônus
+#todo: arrumar amplitude errada, 1.6
 """
 
 import os # Sistema operacional
@@ -11,9 +10,11 @@ from tkinter import filedialog
 import numpy as np # Calculos matemáticos
 import matplotlib.pyplot as plt # Gráfico
 from scipy.io import wavfile # Lê o arquivo .wav e extrai os dados numéricos do sinal
+import scipy.io as sio
+import scipy.signal as signal
 
 #! ==========================
-#! 1.1 - Seleção de Áudio
+#! 1.1 - Carregamento do .wav
 #! ==========================
 
 def carregar_wav():
@@ -36,20 +37,20 @@ def carregar_wav():
     
     return caminho_arquivo
 
-#! ==========================
-#! 1.2 - Análise no Domínio do Tempo
-#! ==========================
+#! =========================
+#! 1.2 Gráfico x(t) no tempo
+#! =========================
 
 def plotar_sinal_tempo(caminho_arquivo):
     # Lê a taxa de amostragem (frequência) e o array de dados do sinal x[n]
-    taxa_amostragem, dados_sinal = wavfile.read(caminho_arquivo)
+    frequencia_amostragem, dados_sinal = wavfile.read(caminho_arquivo)
 
     # Duração = número de amostras / taxa de amostragem (t = N/f)
     #? linspace cria uma sequência de números uniformemente espaçados:
     # 1 parâmetro: início (t = 0s)
     # 2 parâmetro: final
     # 3 parâmetro: quantidade de pontos
-    tempo = np.linspace(0, len(dados_sinal) / taxa_amostragem, num=len(dados_sinal))
+    tempo = np.linspace(0, len(dados_sinal) / frequencia_amostragem, num=len(dados_sinal))
 
     # Configura e exibe o gráfico
     plt.figure(num="Forma de onda em função do tempo", figsize=(10, 4)) # Nome da janela + 10 polegadas de largura, 4 de altura
@@ -65,24 +66,28 @@ def plotar_sinal_tempo(caminho_arquivo):
     # Mostra a janela com o gráfico
     plt.show()
     
-    return taxa_amostragem, dados_sinal
+    return frequencia_amostragem, dados_sinal
 
-#! ==========================
-#! 1.3 - Análise no Domínio da Frequência
-#! ==========================
+#! ==================================
+#! 1.3 Gráficos X(e^jw) na frequência
+#! ==================================
 
-def plotar_espectro_frequencia(dados_sinal, taxa_amostragem):
-    # Domínio da Frequência (FFT)
+def plotar_espectro_frequencia(frequencia_amostragem, dados_sinal):
+    
+    # N = f_s * T -> número total de amostras
     N = len(dados_sinal)
 
     #? Aplica a Transformada Rápida de Fourier (FFT)
+    # DFT direta: mais lenta, custo aproximado N^2
+    # FFT: muito mais rápida, custo aproximado Nlog2N
     fft_resultado_bruto = np.fft.fft(dados_sinal)
 
     #? Gera o eixo X das frequências originais (em Hz)
-    frequencias_hz_brutas = np.fft.fftfreq(N, d=1/taxa_amostragem)
+    # A função fftfreq retorna as frequências associadas aos índices da FFT.
+    frequencias_hz_brutas = np.fft.fftfreq(N, 1/frequencia_amostragem)
 
     #? o 'fftshift' centraliza a frequência zero (0 Hz)
-    # Corta os vetores pela metade (Teorema de Nyquist)
+    # Reorganiza os dados em duas partes:
     # A primeira metade (de 0 a f/2) contém as frequências positivas
     # A segunda metade (de f/2 a f) contém as frequências negativas
     fft_centralizada = np.fft.fftshift(fft_resultado_bruto)
@@ -99,12 +104,12 @@ def plotar_espectro_frequencia(dados_sinal, taxa_amostragem):
     fase = np.angle(fft_centralizada)
 
 
-    # Configura e exibe os gráficos
+    #* Configura e exibe os gráficos
     # Cria uma nova figura com dois subgráficos (2 linhas, 1 coluna)
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), num="Espectro de Frequência")
 
     # Define o limite exato de Nyquist
-    f_max_khz = (taxa_amostragem / 2) / 1000
+    f_max_khz = (frequencia_amostragem / 2) / 1000
 
     # Cria uma lista de marcadores de 5 em 5. 
     max_tick = int(f_max_khz // 5) * 5
@@ -131,6 +136,129 @@ def plotar_espectro_frequencia(dados_sinal, taxa_amostragem):
     plt.tight_layout()
     plt.show()
 
-#! ==========================
-#! 1.4
-#! ==========================
+#! =========================
+#! 1.4 Carregamento dos .mat
+#! =========================
+
+def carrega_mat():
+
+    caminho_num = filedialog.askopenfilename(
+        title="Selecione o arquivo .mat do NUMERADOR",
+        filetypes=[("Arquivos MATLAB", "*.mat")]
+    )
+
+    if not caminho_num:
+        raise FileNotFoundError("Operação cancelada: Arquivo do numerador não selecionado.")
+
+    caminho_den = filedialog.askopenfilename(
+        title="Selecione o arquivo .mat do DENOMINADOR",
+        filetypes=[("Arquivos MATLAB", "*.mat")]
+    )
+
+    if not caminho_den:
+        raise FileNotFoundError("Operação cancelada: Arquivo do denominador não selecionado.")
+
+    # Leitura e Extração Dinâmica dos Coeficientes
+    mat_num = sio.loadmat(caminho_num)
+    mat_den = sio.loadmat(caminho_den)
+
+    # Adquire a primeira variável válida do arquivo
+    def extrair_coeficientes(dicionario_mat):
+        for chave, valor in dicionario_mat.items():
+                if not chave.startswith('__'):  # Ignora os metadados
+                    return valor.flatten()      # Transforma em array
+        raise ValueError("Nenhuma variável de coeficiente encontrada no arquivo .mat")
+
+    # Extrai os coeficientes sem precisar saber os nomes das variáveis
+    numerador = extrair_coeficientes(mat_num)
+    denominador = extrair_coeficientes(mat_den)
+
+    return numerador, denominador
+
+#! ==================================
+#! 1.5 Gráficos H(e^jw) na frequência
+#! ==================================
+
+def plotar_resposta_frequencia(num, den, frequencia_amostragem):
+    #? O filtro IIR é descrito por uma função de transferência do tipo:
+    # H(e^jw) = B(e^jw) / A(e^jw)
+
+    #* Espectro Completo (-fs/2 até fs/2), para escala linear
+    # whole=True calcula o círculo unitário inteiro (0 até fs)
+    # worN=8192 significa que o gráfico será calculado com 8192 pontos de frequência, não que o filtro tem 8192 pontos
+    freqs_full_hz, h_full = signal.freqz(num, den, worN=8192, whole=True, fs=frequencia_amostragem)
+
+    # Truque para mover as frequências > fs/2 para a faixa negativa
+    freqs_full_hz = freqs_full_hz - frequencia_amostragem * (freqs_full_hz > frequencia_amostragem / 2)
+
+    # Reordena do menor (negativo) para o maior (positivo)
+    idx_sort = np.argsort(freqs_full_hz)
+    freqs_full_khz = freqs_full_hz[idx_sort] / 1000
+    h_full_ordenado = h_full[idx_sort]
+
+    magnitude_linear = np.abs(h_full_ordenado)
+    fase_linear_rad = np.unwrap(np.angle(h_full_ordenado))
+
+    #* Apenas Frequências Positivas (0 até fs/2), para escala em dB
+    freqs_pos_hz, h_pos = signal.freqz(num, den, worN=8192, fs=frequencia_amostragem)
+    freqs_pos_khz = freqs_pos_hz / 1000
+
+    #? 1e-12 evita log10(0), que é indefinido.
+    magnitude_db = 20 * np.log10(np.abs(h_pos) + 1e-12)
+    fase_graus = np.unwrap(np.angle(h_pos)) * (180 / np.pi)
+
+    # Plotagem do Painel 2x2
+    fig, axs = plt.subplots(2, 2, figsize=(16, 8), num="Análise do Filtro Digital")
+
+    # Ajuste do limite X
+    f_max = (frequencia_amostragem / 2) / 1000
+
+    # ---------------------------------------------------------
+    # GRÁFICO 1 (Topo Esquerda): Magnitude Linear
+    # ---------------------------------------------------------
+    axs[0, 0].plot(freqs_full_khz, magnitude_linear, color='#1f77b4', linewidth=1)
+    axs[0, 0].set_title("N = 13 Chebyshev Type I Lowpass Filter", fontsize=10, fontweight='bold')
+    axs[0, 0].set_ylabel("|H(e^jw)|")
+    axs[0, 0].set_xlabel("f (kHz)")
+    axs[0, 0].grid(True, linestyle='-', alpha=0.3)
+    axs[0, 0].set_xlim(-f_max, f_max)
+
+    # ---------------------------------------------------------
+    # GRÁFICO 2 (Base Esquerda): Fase Linear (Radianos)
+    # ---------------------------------------------------------
+    axs[1, 0].plot(freqs_full_khz, fase_linear_rad, color='#1f77b4', linewidth=1)
+    axs[1, 0].set_ylabel("θ(ω)")
+    axs[1, 0].set_xlabel("f (kHz)")
+    axs[1, 0].grid(True, linestyle='-', alpha=0.3)
+    axs[1, 0].set_xlim(-f_max, f_max)
+
+    # ---------------------------------------------------------
+    # GRÁFICO 3 (Topo Direita): Magnitude em dB (Lin-Log)
+    # ---------------------------------------------------------
+    axs[0, 1].plot(freqs_pos_khz, magnitude_db, color='#1f77b4', linewidth=1)
+    axs[0, 1].set_title("Magnitude", fontsize=10, fontweight='bold')
+    axs[0, 1].set_ylabel("Magnitude (dB)")
+    axs[0, 1].set_xlabel("Frequency (kHz)")
+    axs[0, 1].grid(True, linestyle='-', alpha=0.3)
+    axs[0, 1].set_xlim(0, f_max)
+    axs[0, 1].set_ylim(-400, 20) # Força o limite Y similar ao da sua imagem
+
+    # ---------------------------------------------------------
+    # GRÁFICO 4 (Base Direita): Fase em Graus
+    # ---------------------------------------------------------
+    axs[1, 1].plot(freqs_pos_khz, fase_graus, color='#1f77b4', linewidth=1)
+    axs[1, 1].set_title("Phase", fontsize=10, fontweight='bold')
+    axs[1, 1].set_ylabel("Phase (degrees)")
+    axs[1, 1].set_xlabel("Frequency (kHz)")
+    axs[1, 1].grid(True, linestyle='-', alpha=0.3)
+    axs[1, 1].set_xlim(0, f_max)
+
+    # Ajusta o espaçamento entre os gráficos para nada ficar sobreposto
+    plt.tight_layout()
+    plt.show()
+
+#! ==================================
+#! 1.6 Gráfico h[n] por 1000 amostras
+#! ==================================
+
+#todo
