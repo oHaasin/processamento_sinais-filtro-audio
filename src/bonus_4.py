@@ -882,3 +882,32 @@ def plotar_comparativo_overlap_add(metricas_4):
         plt.grid(True, axis="y", linestyle="--", alpha=0.6)
         plt.tight_layout()
         plt.show()
+
+def plotar_validacao_overlap_add(fs, validacao_4):
+    """
+    Plota a validação do overlap-add em trecho pequeno,
+    comparando convolução, FFT e referência por np.convolve.
+    """
+
+    x_teste = validacao_4["x_teste"]
+    y_ref = validacao_4["y_ref"]
+    y_ola_conv = validacao_4["y_ola_conv"]
+    y_ola_fft = validacao_4["y_ola_fft"]
+
+    tempo_x = np.arange(len(x_teste)) / fs
+    tempo_y = np.arange(len(y_ref)) / fs
+
+    plt.figure(num="Questão 4.1 - Validação overlap-add", figsize=(12, 6))
+
+    plt.plot(tempo_x, x_teste, label="Trecho original", linewidth=0.5)
+    plt.plot(tempo_y, y_ref, label="Referência np.convolve", linewidth=0.8)
+    plt.plot(tempo_y, y_ola_conv, "--", label="Overlap-add por convolução", linewidth=0.8)
+    plt.plot(tempo_y, y_ola_fft, ":", label="Overlap-add por FFT", linewidth=0.8)
+
+    plt.title("Validação do overlap-add em trecho pequeno")
+    plt.xlabel("t (s)")
+    plt.ylabel("Amplitude")
+    plt.grid(True, linestyle="--", alpha=0.6)
+    plt.legend(loc="upper right")
+    plt.tight_layout()
+    plt.show()

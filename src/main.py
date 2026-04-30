@@ -285,6 +285,11 @@ validacao_4 = bonus_4.validar_overlap_add(
     n_validacao=3000
 )
 
+bonus_4.plotar_validacao_overlap_add(
+    fs=fs,
+    validacao_4=validacao_4
+)
+
 # 4.2 - Filtragem do áudio usando blocos de tamanho Nx = Nh
 resultados_4 = bonus_4.filtrar_audio_overlap_add(
     dados=dados,
