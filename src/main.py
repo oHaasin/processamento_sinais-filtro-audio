@@ -273,3 +273,74 @@ filtragem_3.plotar_metricas_filtragem(metricas_3)
 #todo
 
 #* Execução da quarta parte
+
+# ============================================================
+# 4. Bônus - Overlap-add
+# ============================================================
+
+# 4.1 - Validação do overlap-add usando as funções da Questão 2
+validacao_4 = bonus_4.validar_overlap_add(
+    dados=dados,
+    h_trunc=h_trunc,
+    n_validacao=3000
+)
+
+# 4.2 - Filtragem do áudio usando blocos de tamanho Nx = Nh
+resultados_4 = bonus_4.filtrar_audio_overlap_add(
+    dados=dados,
+    h_trunc=h_trunc,
+    metodos=("fft",),
+    retornar_mesmo_tamanho=True
+)
+
+# ============================================================
+# 4.3 - Apresentação dos resultados no tempo e na frequência
+# ============================================================
+
+bonus_4.plotar_overlap_add_tempo(
+    fs=fs,
+    sinal_original=dados,
+    resultados_4=resultados_4
+)
+
+bonus_4.plotar_overlap_add_tempo(
+    fs=fs,
+    sinal_original=dados,
+    resultados_4=resultados_4,
+    t_inicio=16,
+    t_fim=26
+)
+
+bonus_4.plotar_overlap_add_frequencia(
+    fs=fs,
+    resultados_4=resultados_4
+)
+
+
+# ============================================================
+# 4.4 - Execução do sinal filtrado no sistema de áudio
+# ============================================================
+
+caminhos_4 = bonus_4.executar_audio_overlap_add(
+    fs=fs,
+    resultados_4=resultados_4,
+    metodo="fft",
+    pasta_saida="audios_filtrados"
+)
+
+# ============================================================
+# 4.5 - Análise comparativa com os métodos anteriores
+# ============================================================
+
+metricas_4 = bonus_4.analisar_comparativo_overlap_add(
+    fs=fs,
+    sinal_original=dados,
+    resultados_3=resultados_3,
+    resultados_4=resultados_4,
+    validacao_4=validacao_4,
+    faixa_ruido=(5000, 18000),
+    faixa_util=(0, 5000),
+    trecho_ruido=(16, 26)
+)
+
+bonus_4.plotar_comparativo_overlap_add(metricas_4)
