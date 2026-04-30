@@ -239,6 +239,37 @@ filtragem_3.plotar_espectros_filtrados(
     resultados=resultados_3
 )
 
+# ============================================================
+# 3.3 - Execução do sinal filtrado no sistema de áudio
+# ============================================================
+
+caminhos_audio = filtragem_3.executar_audio_filtrado(
+    fs=fs,
+    resultados=resultados_3,
+    metodo="fft",
+    pasta_saida="audios_filtrados"
+)
+
+# Para ouvir outro método, troque metodo="fft" por:
+# metodo="eqdif"
+# metodo="conv"
+
+
+# ============================================================
+# 3.4 - Análise dos efeitos da filtragem linear
+# ============================================================
+
+metricas_3 = filtragem_3.analisar_efeitos_filtragem(
+    fs=fs,
+    sinal_original=dados,
+    resultados=resultados_3,
+    faixa_ruido=(5000, 18000),
+    faixa_util=(0, 5000),
+    trecho_ruido=(16, 26)
+)
+
+filtragem_3.plotar_metricas_filtragem(metricas_3)
+
 #todo
 
 #* Execução da quarta parte
