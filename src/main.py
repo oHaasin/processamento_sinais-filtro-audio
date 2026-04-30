@@ -1,14 +1,16 @@
 """
-# Autores: Oliver Haas, Gabriel Paiva
-# Data de última modificação: 29/04/2026
+#! Autores: Oliver Haas, Gabriel Paiva
+#* Data de última modificação: 30/04/2026
 #? Objetivo: Juntar as partes do trabalho
-#todo: Terminar primeira parte, adicionar demais
+#todo: Terminar segunda, terceira e quarta partes
 """
 
 import carregamento_dados_1
 import filtros_2
 import filtragem_3
 import bonus_4
+import numpy as np
+import matplotlib.pyplot as plt
 
 #* Execução da primeira parte
 
@@ -31,12 +33,6 @@ carregamento_dados_1.plotar_resposta_frequencia(numerador, denominador, fs)
 h = carregamento_dados_1.plotar_resposta_impulso(numerador, denominador, n_amostras=1000)
 
 #* Execução da segunda parte
-#* Execução da segunda parte
-
-#* Execução da segunda parte
-
-import numpy as np
-import matplotlib.pyplot as plt
 
 # ============================================================
 # 2.1 Filtragem pela equação de diferenças
