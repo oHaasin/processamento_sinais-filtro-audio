@@ -177,6 +177,29 @@ erro_conv_fft = np.max(np.abs(y_conv_teste - y_fft_teste))
 
 print("Erro máximo entre convolução circular e FFT no teste =", erro_conv_fft)
 
+# ============================================================
+# Validação visual auxiliar - Comparação dos métodos
+# ============================================================
+# Este gráfico não é um item separado do enunciado da Questão 2.
+# Ele serve para visualizar o resultado da equação de diferenças
+# e da FFT com resposta ao impulso truncada.
+
+tempo = np.arange(len(dados)) / fs
+
+plt.figure(num="Questão 2 - Comparação dos métodos", figsize=(12, 6))
+
+plt.plot(tempo, dados, label="Sinal corrompido", linewidth=0.5)
+plt.plot(tempo, y_eqdif, label="Equação de diferenças", linewidth=0.8)
+plt.plot(tempo, y_fft, "--", label="FFT com h[n] truncada", linewidth=0.8)
+
+plt.title("Comparação dos métodos de filtragem")
+plt.xlabel("t (s)")
+plt.ylabel("Amplitude")
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.legend(loc="upper right")
+plt.tight_layout()
+plt.show()
+
 #todo
 
 #* Execução da terceira parte
