@@ -1,6 +1,6 @@
 """
 #! Autores: Oliver Haas, Gabriel Paiva
-#* Data de última modificação: 30/04/2026
+#* Data de última modificação: 02/04/2026
 #? Objetivo: Juntar as partes do trabalho
 #todo: Terminar segunda, terceira e quarta partes
 """
@@ -33,7 +33,6 @@ carregamento_dados_1.plotar_resposta_frequencia(numerador, denominador, fs)
 h = carregamento_dados_1.plotar_resposta_impulso(numerador, denominador, n_amostras=1000)
 
 #* Execução da segunda parte
-
 
 # ============================================================
 # 2.1a - Filtragem pela equação de diferenças
@@ -200,8 +199,6 @@ plt.legend(loc="upper right")
 plt.tight_layout()
 plt.show()
 
-#todo
-
 #* Execução da terceira parte
 
 # ============================================================
@@ -269,8 +266,6 @@ metricas_3 = filtragem_3.analisar_efeitos_filtragem(
 )
 
 filtragem_3.plotar_metricas_filtragem(metricas_3)
-
-#todo
 
 #* Execução da quarta parte
 

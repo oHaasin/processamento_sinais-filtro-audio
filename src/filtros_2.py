@@ -3,11 +3,15 @@ import numpy as np
 #! ========================================
 #! 2.1a Filtragem pela equação de diferenças
 #! ========================================
+
+# Usamos classe para armazenar o 'histórico' das amostras: entradas e saídas passadas
 class FiltroEqDif:
     """
     Filtro IIR implementado pela equação de diferenças:
 
-    y[n] = sum(b[k] x[n-k]) - sum(a[k] y[n-k]), para k >= 1
+    y[n] = somatorio(b[k] x[n-k]) - somatorio(a[k] y[n-k]), para k >= 1
+
+    Onde b = numerador, e a = denominador
 
     A função filtrar_amostra(x_n) simula o comportamento pedido:
     recebe uma amostra por vez e retorna uma amostra de saída.
@@ -37,9 +41,7 @@ class FiltroEqDif:
         self.y_hist[:] = 0.0
 
     def filtrar_amostra(self, x_n):
-        """
-        Recebe uma amostra x[n] e retorna a saída correspondente y[n].
-        """
+        # Recebe uma amostra x[n] e retorna a saída correspondente y[n].
 
         # Desloca o histórico de entradas:
         # x[n-1] vai para x[n-2], x[n-2] vai para x[n-3], etc.

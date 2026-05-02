@@ -9,9 +9,9 @@ from scipy.io import wavfile
 import filtros_2
 
 
-# ============================================================
-# Funções auxiliares
-# ============================================================
+#! ============================================================
+#! Funções auxiliares
+#! ============================================================
 
 def ajustar_tamanho(y, tamanho):
     """
@@ -55,9 +55,9 @@ def calcular_espectro(sinal, fs):
     return frequencias_khz, magnitude, fase
 
 
-# ============================================================
-# 3.1 - Filtragem do sinal de áudio utilizando as três formas
-# ============================================================
+#! ============================================================
+#! 3.1 - Filtragem do sinal de áudio utilizando as três formas
+#! ============================================================
 
 def filtrar_sinal_tres_formas(
     dados,
@@ -97,9 +97,9 @@ def filtrar_sinal_tres_formas(
         "Ny": Ny,
     }
 
-    # ------------------------------------------------------------
-    # 3.1a - Filtragem pela equação de diferenças
-    # ------------------------------------------------------------
+    #! ------------------------------------------------------------
+    #! 3.1a - Filtragem pela equação de diferenças
+    #! ------------------------------------------------------------
 
     print("\nQuestão 3.1 - Filtragem pela equação de diferenças...")
 
@@ -115,9 +115,9 @@ def filtrar_sinal_tres_formas(
     print("Concluída.")
     print("Tamanho da saída por equação de diferenças =", len(y_eqdif))
 
-    # ------------------------------------------------------------
-    # 3.1b - Filtragem por convolução com h_trunc[n]
-    # ------------------------------------------------------------
+    #! ------------------------------------------------------------
+    #! 3.1b - Filtragem por convolução com h_trunc[n]
+    #! ------------------------------------------------------------
 
     print("\nQuestão 3.1 - Filtragem por convolução...")
 
@@ -158,9 +158,9 @@ def filtrar_sinal_tres_formas(
     print("Ny obtido no teste =", len(y_conv_teste))
     print("Erro máximo em relação ao np.convolve =", erro_conv)
 
-    # ------------------------------------------------------------
-    # 3.1c - Filtragem pela FFT
-    # ------------------------------------------------------------
+    #! ------------------------------------------------------------
+    #! 3.1c - Filtragem pela FFT
+    #! ------------------------------------------------------------
 
     print("\nQuestão 3.1 - Filtragem por FFT...")
 
@@ -185,9 +185,9 @@ def filtrar_sinal_tres_formas(
     return resultados
 
 
-# ============================================================
-# 3.2 - Apresentação dos sinais no domínio do tempo
-# ============================================================
+#! ============================================================
+#! 3.2 - Apresentação dos sinais no domínio do tempo
+#! ============================================================
 
 def plotar_sinais_filtrados_tempo(
     fs,
@@ -252,9 +252,9 @@ def plotar_sinais_filtrados_tempo(
     plt.show()
 
 
-# ============================================================
-# 3.2 - Apresentação dos sinais no domínio da frequência
-# ============================================================
+#! ============================================================
+#! 3.2 - Apresentação dos sinais no domínio da frequência
+#! ============================================================
 
 def plotar_espectros_filtrados(fs, resultados):
     """
@@ -312,9 +312,9 @@ def plotar_espectros_filtrados(fs, resultados):
     plt.tight_layout()
     plt.show()
     
-    # ============================================================
-# 3.3 - Execução do sinal filtrado no sistema de áudio
-# ============================================================
+#! ============================================================
+#! 3.3 - Execução do sinal filtrado no sistema de áudio
+#! ============================================================
 
 
 def converter_para_int16(sinal):
@@ -435,9 +435,9 @@ def executar_todos_audios_filtrados(fs, resultados, pasta_saida="audios_filtrado
     return caminhos
 
 
-# ============================================================
-# 3.4 - Análise dos efeitos da filtragem linear
-# ============================================================
+#! ============================================================
+#! 3.4 - Análise dos efeitos da filtragem linear
+#! ============================================================
 
 def calcular_rms(sinal):
     """

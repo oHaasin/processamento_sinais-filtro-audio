@@ -10,9 +10,9 @@ from scipy.io import wavfile
 import filtros_2
 
 
-# ============================================================
-# Função auxiliar
-# ============================================================
+#! ============================================================
+#! Função auxiliar
+#! ============================================================
 
 def ajustar_tamanho(y, tamanho):
     """
@@ -33,9 +33,9 @@ def ajustar_tamanho(y, tamanho):
     return y_ajustado
 
 
-# ============================================================
-# 4.1 - Algoritmo overlap-add genérico
-# ============================================================
+#! ============================================================
+#! 4.1 - Algoritmo overlap-add genérico
+#! ============================================================
 
 def overlap_add(x, h_trunc, tamanho_bloco=None, metodo="fft"):
     """
@@ -94,9 +94,9 @@ def overlap_add(x, h_trunc, tamanho_bloco=None, metodo="fft"):
     return y
 
 
-# ============================================================
-# 4.1 - Versões específicas do overlap-add
-# ============================================================
+#! ============================================================
+#! 4.1 - Versões específicas do overlap-add
+#! ============================================================
 
 def overlap_add_conv(x, h_trunc, tamanho_bloco=None):
     """
@@ -124,9 +124,9 @@ def overlap_add_fft(x, h_trunc, tamanho_bloco=None):
     )
 
 
-# ============================================================
-# 4.2 - Filtragem do áudio com blocos Nx = Nh
-# ============================================================
+#! ============================================================
+#! 4.2 - Filtragem do áudio com blocos Nx = Nh
+#! ============================================================
 
 def filtrar_audio_overlap_add(dados, h_trunc, metodos=("fft",), retornar_mesmo_tamanho=True):
     """
@@ -224,9 +224,9 @@ def filtrar_audio_overlap_add(dados, h_trunc, metodos=("fft",), retornar_mesmo_t
     return resultados
 
 
-# ============================================================
-# Validação auxiliar em trecho pequeno
-# ============================================================
+#! ============================================================
+#! Validação auxiliar em trecho pequeno
+#! ============================================================
 
 def validar_overlap_add(dados, h_trunc, n_validacao=3000):
     """
@@ -290,9 +290,9 @@ def validar_overlap_add(dados, h_trunc, n_validacao=3000):
 
     return resultados_validacao
 
-# ============================================================
-# Funções auxiliares para 4.3 e 4.4
-# ============================================================
+#! ============================================================
+#! Funções auxiliares para 4.3 e 4.4
+#! ============================================================
 
 def calcular_espectro(sinal, fs):
     """
@@ -340,9 +340,9 @@ def obter_sinais_overlap_add(resultados_4):
     return sinais
 
 
-# ============================================================
-# 4.3 - Apresentação dos resultados no domínio do tempo
-# ============================================================
+#! ============================================================
+#! 4.3 - Apresentação dos resultados no domínio do tempo
+#! ============================================================
 
 def plotar_overlap_add_tempo(fs, sinal_original, resultados_4, t_inicio=None, t_fim=None):
     """
@@ -409,9 +409,9 @@ def plotar_overlap_add_tempo(fs, sinal_original, resultados_4, t_inicio=None, t_
     plt.show()
 
 
-# ============================================================
-# 4.3 - Apresentação dos resultados no domínio da frequência
-# ============================================================
+#! ============================================================
+#! 4.3 - Apresentação dos resultados no domínio da frequência
+#! ============================================================
 
 def plotar_overlap_add_frequencia(fs, resultados_4):
     """
@@ -465,9 +465,9 @@ def plotar_overlap_add_frequencia(fs, resultados_4):
     plt.show()
 
 
-# ============================================================
-# 4.4 - Execução do sinal filtrado no sistema de áudio
-# ============================================================
+#! ============================================================
+#! 4.4 - Execução do sinal filtrado no sistema de áudio
+#! ============================================================
 
 def converter_para_int16(sinal):
     """
@@ -551,9 +551,9 @@ def executar_audio_overlap_add(fs, resultados_4, metodo="fft", pasta_saida="audi
 
     return caminhos
 
-# ============================================================
-# 4.5 - Análise comparativa com os métodos anteriores
-# ============================================================
+#! ============================================================
+#! 4.5 - Análise comparativa com os métodos anteriores
+#! ============================================================
 
 def calcular_rms(sinal):
     """
